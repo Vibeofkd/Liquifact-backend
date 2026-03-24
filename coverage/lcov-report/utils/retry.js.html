@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/services/invoiceService.js</title>
+    <title>Code coverage report for utils/retry.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/services</a> invoiceService.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">utils</a> retry.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -118,115 +118,160 @@
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
 <a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * Invoice Service
- * Handles data retrieval for invoice listings with pagination.
+ * Utility for retrying operations with exponential backoff.
+ * 
+ * @module retry
  */
-&nbsp;
-// Generate a larger set of mock invoices for meaningful pagination
-const mockInvoices = Array.from({ length: 25 }, (_, i) =&gt; ({
-  id: `inv_${i + 1}`,
-  amount: Math.floor(Math.random() * 5000) + 500,
-  clientName: `Client ${i + 1}`,
-  status: i % 3 === 0 ? 'verified' : 'pending_verification',
-  ownerId: `user_${(i % 5) + 1}`,
-}));
 &nbsp;
 /**
- * Get a paginated list of invoices.
- *
- * @param {Object} params - Pagination parameters.
- * @param {number} params.page - Current page number (1-indexed).
- * @param {number} params.limit - Maximum number of records per page.
- * @returns {Object} Paginated data and metadata.
+ * A predicate function to determine if an error should trigger a retry.
+ * @callback ShouldRetry
+ * @param {Error} error The error thrown by the operation.
+ * @returns {boolean} True if the operation should be retried, false otherwise.
  */
-const getInvoices = ({ page = 1, limit = 10 }) =&gt; {
-  // 1. Sanitize &amp; Validate input
-  const p = Math.max(1, parseInt(page, 10)) || 1;
-  const l = Math.min(100, Math.max(1, parseInt(limit, 10))) || 10;
 &nbsp;
-  // 2. Calculate indices
-  const startIndex = (p - 1) * l;
-  const endIndex = p * l;
+/**
+ * Executes a given asynchronous operation with exponential backoff retries.
+ * Provides security validation to prevent unbounded retries or unreasonable delays.
+ * 
+ * @param {Function} operation - An asynchronous function to execute.
+ * @param {Object} [options={}] - Configuration options for the retry behavior.
+ * @param {number} [options.maxRetries=3] - Maximum number of retry attempts (capped at 10).
+ * @param {number} [options.baseDelay=500] - Initial delay in milliseconds (capped at 10000ms).
+ * @param {number} [options.maxDelay=10000] - Maximum delay between retries in milliseconds (capped at 60000ms).
+ * @param {ShouldRetry} [options.shouldRetry] - Function to evaluate if an error is transient (defaults to always true).
+ * @returns {Promise&lt;any&gt;} The result of the operation if it succeeds.
+ * @throws {Error} The last error thrown if all retries are exhausted, or an error that fails the shouldRetry check.
+ */
+async function withRetry(operation, options = {}) {
+  // Security bounds
+  const MAX_RETRIES_CAP = 10;
+  const MAX_DELAY_CAP = 60000;
+  const MAX_BASE_DELAY_CAP = 10000;
 &nbsp;
-  // 3. Slice the dataset
-  const results = mockInvoices.slice(startIndex, endIndex);
+  let {
+    maxRetries = 3,
+    baseDelay = 500,
+    maxDelay = 10000,
+    shouldRetry = () =&gt; true
+  } = options;
 &nbsp;
-  // 4. Calculate pagination metadata
-  const total = mockInvoices.length;
-  const totalPages = Math.ceil(total / l);
+  // Validate and cap configuration to prevent accidental resource exhaustion
+  maxRetries = Math.max(0, Math.min(maxRetries, MAX_RETRIES_CAP));
+  baseDelay = Math.max(0, Math.min(baseDelay, MAX_BASE_DELAY_CAP));
+  maxDelay = Math.max(0, Math.min(maxDelay, MAX_DELAY_CAP));
 &nbsp;
-  return {
-    invoices: results,
-    meta: {
-      total,
-      page: p,
-      limit: l,
-      totalPages,
-      hasNextPage: p &lt; totalPages,
-      hasPreviousPage: p &gt; 1,
-    },
-  };
-};
+  let attempt = 0;
+&nbsp;
+  while (true) {
+    try {
+      return await operation();
+    } catch (error) {
+      if (attempt &gt;= maxRetries || !shouldRetry(error)) {
+        throw error;
+      }
+&nbsp;
+      // Calculate exponential backoff
+      const exponentialDelay = baseDelay * Math.pow(2, attempt);
+      const delay = Math.min(exponentialDelay, maxDelay);
+      
+      // Add Jitter (±20%)
+      const jitteredDelay = delay * (0.8 + Math.random() * 0.4);
+&nbsp;
+      attempt++;
+      await new Promise((resolve) =&gt; setTimeout(resolve, jitteredDelay));
+    }
+  }
+}
 &nbsp;
 module.exports = {
-  getInvoices,
-  mockInvoices, // Exported for unit test assertions
+  withRetry
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -235,16 +280,16 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-24T21:05:06.880Z
+                at 2026-03-23T20:54:45.692Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     
