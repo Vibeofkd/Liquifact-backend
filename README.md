@@ -28,11 +28,11 @@ Part of the LiquiFact stack: **frontend** (Next.js) | **backend** (this repo) | 
    npm ci
    ```
 
-3. **Configure environment** (optional for local dev)
+3. **Configure environment**
 
    ```bash
    cp .env.example .env
-   # Edit .env if you need Stellar/Horizon/DB settings
+   # Edit .env for CORS, Stellar/Horizon, or future DB settings
    ```
 
 ---
@@ -52,16 +52,43 @@ Default port: **3001**. After starting:
 
 ---
 
+## Configuration
+
+### CORS Allowlist
+
+The API enforces an environment-driven CORS allowlist for browser-originated requests.
+
+- `CORS_ALLOWED_ORIGINS`: Comma-separated list of trusted frontend origins.
+- Example:
+  `CORS_ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com`
+
+Behavior:
+- Requests without an `Origin` header are allowed, as it can be curl, postman, etc. 
+- Requests from allowed origins receive normal CORS headers.
+- Requests from disallowed origins are rejected with `403 Forbidden`.
+- Origin matching is exact only. Wildcards and regex patterns are not supported.
+
+Development default:
+- If `NODE_ENV=development` and `CORS_ALLOWED_ORIGINS` is not set, common local development origins are allowed by default.
+
+Production default:
+- If `CORS_ALLOWED_ORIGINS` is not set outside development, browser origins are denied by default.
+
+---
+
 ## Project structure
 
 ```
 liquifact-backend/
 ├── src/
+│   ├── config/
+│   │   └── cors.js     # CORS allowlist parsing and policy
 │   ├── services/
 │   │   └── soroban.js  # Contract interaction wrappers
 │   ├── utils/
 │   │   └── retry.js    # Exponential backoff utility
-│   └── index.js        # Express app, routes
+│   ├── app.js          # Express app, middleware, routes
+│   └── index.js        # Runtime bootstrap
 ├── .env.example        # Env template
 ├── eslint.config.js
 └── package.json
@@ -89,6 +116,7 @@ To ensure reliable communication with Soroban contract provider APIs, this backe
 GitHub Actions runs on every push and pull request to `main`:
 
 - **Lint** — `npm run lint`
+- **Tests** — `npm test`
 - **Build check** — `node --check src/index.js` (syntax)
 
 Ensure your branch passes these before opening a PR.
