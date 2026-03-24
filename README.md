@@ -65,6 +65,28 @@ liquifact-backend/
 
 ---
 
+## API Deprecation Policy
+This API follows **RFC 8594** for signaling endpoint retirement.
+
+### Using the Deprecation Middleware
+To deprecate a route, wrap the handler with the `deprecate` middleware:
+
+\`\`\`javascript
+const { deprecate } = require('./middleware/deprecation');
+
+app.get('/old-route', deprecate({
+  sunset: '2026-12-31T23:59:59Z',
+  link: 'https://docs.liquifact.com/migration-guide'
+}), (req, res) => { ... });
+\`\`\`
+
+### Headers Issued
+- **Deprecation**: `true` (Signals the endpoint is no longer recommended).
+- **Sunset**: HTTP-date (The exact timestamp when the endpoint will be shut down).
+- **Link**: A URI reference with `rel="deprecation"` pointing to migration docs.
+
+---
+
 ## CI/CD
 
 GitHub Actions runs on every push and pull request to `main`:

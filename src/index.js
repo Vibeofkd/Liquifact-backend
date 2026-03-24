@@ -5,6 +5,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const { deprecate } = require('./middleware/deprecation');
 require('dotenv').config();
 
 const app = express();
@@ -37,7 +38,10 @@ app.get('/api', (req, res) => {
 });
 
 // Placeholder: Invoices (to be wired to Invoice Service + DB)
-app.get('/api/invoices', (req, res) => {
+app.get('/api/invoices', deprecate({ 
+  sunset: '2026-12-31T23:59:59Z', 
+  link: 'https://docs.liquifact.com/api/v2/invoices' 
+}), (req, res) => {
   res.json({
     data: [],
     message: 'Invoice service will list tokenized invoices here.',
