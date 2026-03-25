@@ -73,6 +73,7 @@ function handleInternalError(err, req, res, _next) {
  * @returns {import('express').Express} Configured Express application.
  */
 function createApp() {
+  const isTest = process.env.NODE_ENV === 'test';
   const app = express();
 
   // ── 1. CORS ──────────────────────────────────────────────────────────────
