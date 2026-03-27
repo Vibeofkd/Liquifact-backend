@@ -4,6 +4,8 @@
  */
 
 require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 const { globalLimiter, sensitiveLimiter } = require('./middleware/rateLimit');
 const { authenticateToken } = require('./middleware/auth');
 
@@ -14,6 +16,7 @@ const { cacheResponse } = require('./middleware/cache');
 const { createCacheStore } = require('./services/cacheStore');
 const { cacheConfig } = require('./config/cache');
 
+const app = express();
 const escrowCache = createCacheStore();
 
 const PORT = process.env.PORT || 3001;
@@ -271,6 +274,7 @@ const startServer = () => {
  */
 const resetStore = () => {
   invoices = [];
+  escrowCache.clear();
 };
 
 // Start server if not in test mode
