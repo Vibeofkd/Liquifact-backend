@@ -114,4 +114,4 @@ dist
 .vscode/
 *.swp
 
-node_modules
+node_modules/*

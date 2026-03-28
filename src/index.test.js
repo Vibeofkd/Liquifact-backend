@@ -16,7 +16,7 @@ const app = require('./index');
 const { resetStore, startServer } = app;
 
 const TEST_SECRET = process.env.JWT_SECRET || 'test-secret';
-const validToken = jwt.sign({ id: 1, role: 'user' }, TEST_SECRET, { expiresIn: '1h' });
+const _validToken = jwt.sign({ id: 1, role: 'user' }, TEST_SECRET, { expiresIn: '1h' });
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -91,7 +91,7 @@ function expectSecureHeaders(res) {
 describe('LiquiFact API', () => {
   const secret = process.env.JWT_SECRET || 'test-secret';
   const validToken = jwt.sign({ id: 1, role: 'user' }, secret);
-  const authHeader = { Authorization: `Bearer ${validToken}` };
+  const _authHeader = { Authorization: `Bearer ${validToken}` };
 
   beforeEach(() => {
     resetStore();
