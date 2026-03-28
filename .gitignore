@@ -1,11 +1,14 @@
 # Dependencies
 node_modules/
+jspm_packages/
 package-lock.json
 
 # Environment variables
 .env
+.env.test
 .env.local
 .env.*.local
+.env.production
 
 # Logs
 logs
@@ -13,6 +16,10 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Runtime data
 pids
@@ -21,8 +28,10 @@ pids
 *.pid.lock
 
 # Coverage directory
+coverage
 coverage/
 .nyc_output/
+*.lcov
 
 # IDE
 .vscode/
@@ -38,3 +47,72 @@ Thumbs.db
 # Build output
 dist/
 build/
+out
+
+# jscoverage / JSCover
+lib-cov
+
+# Grunt
+.grunt
+
+# Bower
+bower_components
+
+# waf
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# TypeScript
+typings/
+*.tsbuildinfo
+
+# npm cache
+.npm
+
+# eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# REPL history
+.node_repl_history
+
+# npm pack
+*.tgz
+
+# Yarn
+.yarn-integrity
+
+# parcel
+.cache
+.parcel-cache
+
+# Next.js
+.next
+
+# Nuxt.js
+.nuxt
+
+# Gatsby
+.cache/
+
+# vuepress
+.vuepress/dist
+
+# Serverless
+.serverless/
+
+# FuseBox
+.fusebox/
+
+# DynamoDB
+.dynamodb/
+
+# TernJS
+.tern-port

@@ -62,10 +62,10 @@ module.exports = [
         it: 'readonly',
         test: 'readonly',
         expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
         beforeAll: 'readonly',
         afterAll: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
       },
     },
     rules: {
