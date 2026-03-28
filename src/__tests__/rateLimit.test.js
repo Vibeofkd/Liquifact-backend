@@ -1,6 +1,6 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
-const { app } = require('../index');
+const app = require('../index');
 
 describe('Rate Limiting Middleware', () => {
     const secret = process.env.JWT_SECRET || 'test-secret';
@@ -14,7 +14,7 @@ describe('Rate Limiting Middleware', () => {
 
     describe('Sensitive Operations Throttling - POST /api/invoices', () => {
         // Note: The sensitive limiter has a limit of 10 per hour.
-        // To avoid affecting other tests, we should ideally use a fresh instance, 
+        // To avoid affecting other tests, we should ideally use a fresh instance,
         // but here we demonstrate the 429 response by hitting it 11 times.
 
         it('should allow up to 10 requests and then return 429 Too Many Requests', async () => {
@@ -23,10 +23,10 @@ describe('Rate Limiting Middleware', () => {
                 const response = await request(app)
                     .post('/api/invoices')
                     .set('Authorization', `Bearer ${validToken}`)
-                    .send({ amount: 100, customer: `Test Customer ${i}` });
+                    .send({ amount: 100, customer: 'Test' });
 
                 // If we hit a 429 early because of previous tests, we just break and check the next one.
-                if (response.status === 429) { break; }
+                if (response.status === 429) {break;}
                 expect(response.status).toBe(201);
             }
 
@@ -34,7 +34,7 @@ describe('Rate Limiting Middleware', () => {
             const throttledResponse = await request(app)
                 .post('/api/invoices')
                 .set('Authorization', `Bearer ${validToken}`)
-                .send({ amount: 100, customer: 'Throttled Customer' });
+                .send({ amount: 100, customer: 'Test' });
 
             expect(throttledResponse.status).toBe(429);
             expect(throttledResponse.body.error).toContain('rate limit exceeded');

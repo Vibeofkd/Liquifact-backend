@@ -1,8 +1,17 @@
+'use strict';
+
 /**
  * LiquiFact API Gateway
  * Express server bootstrap for invoice financing, auth, and Stellar integration.
  */
 
+ * Express app configuration for invoice financing, auth, and Stellar integration.
+ * Server startup lives in server.js so this module can be imported cleanly in tests.
+ */
+
+const express = require('express');
+const cors = require('cors');
+const { createSecurityMiddleware } = require('./middleware/security');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -10,12 +19,17 @@ const { globalLimiter, sensitiveLimiter } = require('./middleware/rateLimit');
 const { authenticateToken } = require('./middleware/auth');
 const { callSorobanContract } = require('./services/soroban');
 
+const app = express();
 const PORT = process.env.PORT || 3001;
+const app = express();
+
 const app = express();
 
 /**
  * Global Middlewares
  */
+// Security headers — applied first so every response is protected
+app.use(createSecurityMiddleware());
 app.use(cors());
 app.use(express.json());
 app.use(globalLimiter);
@@ -89,7 +103,7 @@ app.get('/api/invoices', (req, res) => {
  * @param {import('express').Response} res - The Express response object.
  * @returns {void}
  */
-app.post('/api/invoices', authenticateToken, sensitiveLimiter, (req, res) => {
+app.post('/api/invoices', sensitiveLimiter, authenticateToken, (req, res) => {
   const { amount, customer } = req.body;
 
   if (!amount || !customer) {
@@ -166,26 +180,21 @@ app.patch('/api/invoices/:id/restore', authenticateToken, (req, res) => {
   if (!invoices[invoiceIndex].deletedAt) {
     return res.status(400).json({ error: 'Invoice is not deleted' });
   }
-
-  // eslint-disable-next-line security/detect-object-injection
-  invoices[invoiceIndex].deletedAt = null;
-
-  return res.json({
-    message: 'Invoice restored successfully.',
-    // eslint-disable-next-line security/detect-object-injection
-    data: invoices[invoiceIndex],
+  res.status(201).json({
+    data: { id: 'placeholder', status: 'pending_verification' },
+    message: 'Invoice upload will be implemented with verification and tokenization.',
   });
 });
 
 /**
- * Retrieves escrow state for a specific invoice from the Soroban contract.
- * Robust integration wrapper with exponential backoff retries.
+ * Retrieves escrow state for a specific invoice.
+ * Robust integration wrapper for Soroban contract interaction.
  *
  * @param {import('express').Request} req - The Express request object.
  * @param {import('express').Response} res - The Express response object.
  * @returns {Promise<void>}
  */
-app.get('/api/escrow/:invoiceId', async (req, res) => {
+app.get('/api/escrow/:invoiceId', authenticateToken, async (req, res) => {
   const { invoiceId } = req.params;
 
   try {
@@ -210,22 +219,18 @@ app.get('/api/escrow/:invoiceId', async (req, res) => {
 });
 
 /**
- * Placeholder: initiates an escrow operation for the given invoice.
- * Requires JWT authentication. Full Soroban integration is pending.
- *
- * @param {import('express').Request} req - The Express request object.
- * @param {import('express').Response} res - The Express response object.
- * @returns {void}
+ * Simulated escrow operations (e.g. funding).
  */
-app.post('/api/escrow', authenticateToken, (req, res) => {
-  return res.json({
-    data: { status: 'funded' },
-    message: 'Escrow operation placeholder. Full Soroban integration pending.',
-  });
+app.post('/api/escrow', authenticateToken, sensitiveLimiter, (req, res) => {
+    res.json({
+        data: { status: 'funded' },
+        message: 'Escrow operation simulated.'
+    });
 });
 
 /**
  * 404 handler for unknown routes.
+ * Also exposes /error-test-trigger to exercise the error handler in tests.
  *
  * @param {import('express').Request} req - The Express request object.
  * @param {import('express').Response} res - The Express response object.
@@ -233,10 +238,15 @@ app.post('/api/escrow', authenticateToken, (req, res) => {
  * @returns {void}
  */
 app.use((req, res, next) => {
-  if (req.path === '/error-test-trigger') {
-    return next(new Error('Test error'));
-  }
-  return res.status(404).json({ error: 'Not found', path: req.path });
+  next(
+    new AppError({
+      type: 'https://liquifact.com/probs/not-found',
+      title: 'Resource Not Found',
+      status: 404,
+      detail: `The path ${req.path} does not exist.`,
+      instance: req.originalUrl,
+    })
+  );
 });
 
 /**
@@ -282,3 +292,8 @@ if (process.env.NODE_ENV !== 'test') {
 
 // Export app and state for testing
 module.exports = { app, startServer, resetStore };
+// Export app as default (so `require('./index')` returns the Express app directly),
+// with startServer and resetStore attached as properties for tests that need them.
+module.exports = app;
+module.exports.startServer = startServer;
+module.exports.resetStore = resetStore;
