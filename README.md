@@ -268,7 +268,10 @@ liquifact-backend/
 │   ├── services/
 │   │   └── soroban.js    # Contract interaction wrappers
 │   ├── utils/
-│   │   └── retry.js    # Exponential backoff utility
+│   │   ├── asyncHandler.js # Async route wrapper
+│   │   ├── queryBuilder.js # Reusable DB query builder
+│   │   ├── retry.js    # Exponential backoff utility
+│   │   └── validators.js # Input validation utilities
 │   ├── app.js          # Express app, middleware, routes
 │   └── index.js        # Runtime bootstrap
 ├── .env.example        # Env template
@@ -311,6 +314,24 @@ To ensure reliable communication with Soroban contract provider APIs, this backe
 - **Automatic retries** for HTTP 429, 502, 503, 504, and network timeouts.
 - **Jitter** (±20%) prevents thundering-herd problems.
 - **Hard caps:** `maxRetries ≤ 10`, `maxDelay ≤ 60 000 ms`, `baseDelay ≤ 10 000 ms`.
+
+---
+
+## Invoice Filtering & Sorting
+
+Endpoint: GET /invoices
+
+Query Parameters:
+- status: paid | pending | overdue
+- sme: SME ID
+- buyer: Buyer ID
+- dateFrom: ISO date
+- dateTo: ISO date
+- sortBy: amount | date
+- order: asc | desc
+
+Example:
+GET /invoices?status=paid&sortBy=amount&order=desc
 
 ---
 

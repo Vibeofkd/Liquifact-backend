@@ -89,6 +89,10 @@ function expectSecureHeaders(res) {
 // ---------------------------------------------------------------------------
 
 describe('LiquiFact API', () => {
+  const secret = process.env.JWT_SECRET || 'test-secret';
+  const validToken = jwt.sign({ id: 1, role: 'user' }, secret);
+  const authHeader = { Authorization: `Bearer ${validToken}` };
+
   beforeEach(() => {
     resetStore();
   });

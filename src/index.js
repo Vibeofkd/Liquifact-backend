@@ -13,6 +13,8 @@ const express = require('express');
 const cors = require('cors');
 const { createSecurityMiddleware } = require('./middleware/security');
 require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 const { globalLimiter, sensitiveLimiter } = require('./middleware/rateLimit');
 const { authenticateToken } = require('./middleware/auth');
 
@@ -20,6 +22,7 @@ const asyncHandler = require('./utils/asyncHandler');
 const errorHandler = require('./middleware/errorHandler');
 const { callSorobanContract } = require('./services/soroban');
 
+const app = express();
 const PORT = process.env.PORT || 3001;
 
 const app = express();
@@ -212,6 +215,16 @@ app.get('/api/escrow/:invoiceId', authenticateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message || 'Error fetching escrow state' });
   }
+});
+
+/**
+ * Simulated escrow operations (e.g. funding).
+ */
+app.post('/api/escrow', authenticateToken, sensitiveLimiter, (req, res) => {
+    res.json({
+        data: { status: 'funded' },
+        message: 'Escrow operation simulated.'
+    });
 });
 
 /**
