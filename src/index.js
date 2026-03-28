@@ -13,6 +13,8 @@ require('dotenv').config();
 const { globalLimiter, sensitiveLimiter } = require('./middleware/rateLimit');
 const { authenticateToken } = require('./middleware/auth');
 const { callSorobanContract } = require('./services/soroban');
+const AppError = require('./errors/AppError');
+const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -99,7 +101,13 @@ app.post('/api/invoices', sensitiveLimiter, authenticateToken, (req, res) => {
   const { amount, customer } = req.body;
 
   if (!amount || !customer) {
-    return res.status(400).json({ error: 'Amount and customer are required' });
+    throw new AppError({
+      type: 'https://liquifact.com/probs/validation-error',
+      title: 'Validation Error',
+      status: 400,
+      detail: 'Amount and customer are required.',
+      instance: req.originalUrl,
+    });
   }
 
   const newInvoice = {
@@ -230,30 +238,37 @@ app.post('/api/escrow', authenticateToken, sensitiveLimiter, (req, res) => {
 });
 
 /**
- * 404 handler for unknown routes.
+ * Test-only route that forces a 500 to exercise the error handler.
  *
- * @param {import('express').Request} req - The Express request object.
- * @param {import('express').Response} res - The Express response object.
+ * @param {import('express').Request} _req - The Express request object.
+ * @param {import('express').Response} _res - The Express response object.
+ * @param {import('express').NextFunction} next - The next middleware function.
  * @returns {void}
  */
-app.use((req, res) => {
-  res.status(404).json({ error: `The path ${req.path} does not exist.` });
+app.get('/error-test-trigger', (_req, _res, next) => {
+  next(new Error('Simulated error for testing'));
 });
 
 /**
- * Global error handler.
- * Logs the error and returns a 500 status.
+ * 404 handler for unknown routes — forwards an RFC 7807 AppError.
  *
- * @param {Error} err - The error object.
  * @param {import('express').Request} req - The Express request object.
- * @param {import('express').Response} res - The Express response object.
- * @param {import('express').NextFunction} _next - The next middleware function.
+ * @param {import('express').Response} _res - The Express response object.
+ * @param {import('express').NextFunction} next - The next middleware function.
  * @returns {void}
  */
-app.use((err, req, res, _next) => {
-  console.error(err);
-  return res.status(500).json({ error: 'Internal server error' });
+app.use((req, _res, next) => {
+  next(new AppError({
+    type: 'https://liquifact.com/probs/not-found',
+    title: 'Resource Not Found',
+    status: 404,
+    detail: `The path ${req.path} does not exist.`,
+    instance: req.originalUrl,
+  }));
 });
+
+// RFC 7807 error handler — handles AppError + generic errors.
+app.use(errorHandler);
 
 /**
  * Starts the Express server.

@@ -131,7 +131,7 @@ describe('LiquiFact API', () => {
         .set('Authorization', `Bearer ${validToken}`)
         .send({ amount: 1000 });
       expect(response.status).toBe(400);
-      expect(response.body).toHaveProperty('error');
+      expect(response.body).toHaveProperty('title');
     });
 
     it('GET /api/invoices - lists active invoices', async () => {

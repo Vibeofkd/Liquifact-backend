@@ -14,7 +14,9 @@
 
 'use strict';
 
-const { describe, it, expect, beforeEach, beforeAll, vi } = require('vitest');
+// Uses Jest globals: describe, it, expect, beforeEach, beforeAll, jest
+jest.mock('../services/invoice.service');
+
 const request = require('supertest');
 const express = require('express');
 
@@ -347,9 +349,9 @@ describe('payloadTooLargeHandler()', () => {
 // ═══════════════════════════════════════════════════════════════════════════
 
 describe('parseAllowedOrigins()', () => {
-  it('returns null for undefined',     () => expect(parseAllowedOrigins(undefined)).toBeNull());
-  it('returns null for empty string',  () => expect(parseAllowedOrigins('')).toBeNull());
-  it('returns null for blank string',  () => expect(parseAllowedOrigins('   ')).toBeNull());
+  it('returns [] for undefined',     () => expect(parseAllowedOrigins(undefined)).toEqual([]));
+  it('returns [] for empty string',  () => expect(parseAllowedOrigins('')).toEqual([]));
+  it('returns [] for blank string',  () => expect(parseAllowedOrigins('   ')).toEqual([]));
   it('parses a single origin',         () => expect(parseAllowedOrigins('https://a.com')).toEqual(['https://a.com']));
   it('parses multiple origins',        () => expect(parseAllowedOrigins('https://a.com,https://b.com')).toEqual(['https://a.com','https://b.com']));
   it('trims whitespace around commas', () => expect(parseAllowedOrigins(' https://a.com , https://b.com ')).toEqual(['https://a.com','https://b.com']));
@@ -543,8 +545,8 @@ describe('callSorobanContract()', () => {
 describe('handleCorsError()', () => {
   it('responds 403 for a CORS rejection error', () => {
     const err = Object.assign(new Error('blocked origin'), { isCorsOriginRejected: true });
-    const res = { status: vi.fn().mockReturnThis(), json: vi.fn() };
-    const next = vi.fn();
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    const next = jest.fn();
     handleCorsError(err, {}, res, next);
     expect(res.status).toHaveBeenCalledWith(403);
     expect(next).not.toHaveBeenCalled();
@@ -552,8 +554,8 @@ describe('handleCorsError()', () => {
 
   it('calls next for non-CORS errors', () => {
     const err  = new Error('something else');
-    const next = vi.fn();
-    const res  = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+    const next = jest.fn();
+    const res  = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     handleCorsError(err, {}, res, next);
     expect(next).toHaveBeenCalledWith(err);
     expect(res.status).not.toHaveBeenCalled();
@@ -563,7 +565,7 @@ describe('handleCorsError()', () => {
 describe('handleInternalError()', () => {
   it('responds 500 with generic message', () => {
     const err = new Error('boom');
-    const res = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     handleInternalError(err, {}, res, () => {});
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Internal server error' });

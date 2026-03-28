@@ -32,6 +32,9 @@
     "supertest": "^7.0.0"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^knex$": "<rootDir>/__mocks__/knex.js"
+    },
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/server.js"
