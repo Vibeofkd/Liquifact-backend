@@ -16,7 +16,7 @@ const { globalLimiter, sensitiveLimiter } = require('./middleware/rateLimit');
 const { authenticateToken } = require('./middleware/auth');
 const { callSorobanContract } = require('./services/soroban');
 const errorHandler = require('./middleware/errorHandler');
-const AppError = require('./utils/AppError');
+const AppError = require('./errors/AppError');
 
 const app = express();
 const PORT = process.env.PORT || 3001;

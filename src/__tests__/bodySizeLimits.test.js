@@ -14,7 +14,7 @@
 
 'use strict';
 
-const { describe, it, expect, beforeEach, beforeAll, vi } = require('vitest');
+const { describe, it, expect, beforeEach, beforeAll } = require('@jest/globals');
 const request = require('supertest');
 const express = require('express');
 
@@ -551,8 +551,8 @@ describe('callSorobanContract()', () => {
 describe('handleCorsError()', () => {
   it('responds 403 for a CORS rejection error', () => {
     const err = Object.assign(new Error('blocked origin'), { isCorsOriginRejected: true });
-    const res = { status: vi.fn().mockReturnThis(), json: vi.fn() };
-    const next = vi.fn();
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    const next = jest.fn();
     handleCorsError(err, {}, res, next);
     expect(res.status).toHaveBeenCalledWith(403);
     expect(next).not.toHaveBeenCalled();
@@ -560,8 +560,8 @@ describe('handleCorsError()', () => {
 
   it('calls next for non-CORS errors', () => {
     const err  = new Error('something else');
-    const next = vi.fn();
-    const res  = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+    const next = jest.fn();
+    const res  = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     handleCorsError(err, {}, res, next);
     expect(next).toHaveBeenCalledWith(err);
     expect(res.status).not.toHaveBeenCalled();
@@ -571,7 +571,7 @@ describe('handleCorsError()', () => {
 describe('handleInternalError()', () => {
   it('responds 500 with generic message', () => {
     const err = new Error('boom');
-    const res = { status: vi.fn().mockReturnThis(), json: vi.fn() };
+    const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
     handleInternalError(err, {}, res, () => {});
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Internal server error' });

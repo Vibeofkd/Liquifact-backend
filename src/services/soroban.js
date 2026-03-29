@@ -83,6 +83,20 @@ function isRetryable(err) {
 }
 
 /**
+ * Legacy alias for isRetryable - checks if error message contains transient indicators.
+ *
+ * @param {Error} err - Error to check.
+ * @returns {boolean} `true` if the error appears transient.
+ */
+function isTransientError(err) {
+  if (!err || !err.message) {
+    return false;
+  }
+  const msg = err.message.toLowerCase();
+  return msg.includes('timeout') || msg.includes('429') || msg.includes('503') || msg.includes('502') || msg.includes('504');
+}
+
+/**
  * Executes `operation` with automatic exponential-backoff retries for
  * transient Soroban / Horizon errors.
  *
@@ -152,6 +166,7 @@ module.exports = {
   withRetry,
   computeBackoff,
   isRetryable,
+  isTransientError,
   SOROBAN_RETRY_CONFIG,
   RETRYABLE_STATUS_CODES,
 };
