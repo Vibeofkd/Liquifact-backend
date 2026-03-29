@@ -238,7 +238,7 @@ function toStandardEnvelope(statusCode, payload) {
       ? payload.error
       : null;
 
-  let message = 'Internal Server Error';
+  let message = 'Internal server error';
   if (typeof payloadError === 'string') {
     message = payloadError;
   } else if (payloadError && typeof payloadError.message === 'string') {
@@ -248,7 +248,7 @@ function toStandardEnvelope(statusCode, payload) {
   }
 
   if (statusCode >= 500 && !isDev) {
-    message = 'Internal Server Error';
+    message = 'Internal server error';
   }
 
   const details = isDev

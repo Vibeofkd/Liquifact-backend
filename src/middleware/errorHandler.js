@@ -22,7 +22,7 @@ function errorHandler(err, req, res, _next) {
 
   let message;
   if (statusCode >= 500 && isProduction) {
-    message = 'Internal Server Error';
+    message = 'Internal server error';
   } else if (err instanceof AppError) {
     message = err.detail || err.title || 'Application error';
   } else {
@@ -42,6 +42,7 @@ function errorHandler(err, req, res, _next) {
 
   const details = isDevelopment ? err.stack || err.message : null;
   const payload = buildErrorResponse(message, code, details);
+  res.header('Content-Type', 'application/problem+json');
   res.status(statusCode).json(payload);
 }
 

@@ -47,7 +47,7 @@ describe('Standard Response Envelope (Issue 19)', () => {
     process.env.NODE_ENV = 'production';
     const res = await request(app).get('/debug/error');
     expect(res.status).toBe(500);
-    expect(res.body.error.message).toBe('Internal Server Error');
+    expect(res.body.error.message).toBe('Internal server error');
     expect(res.body.error.details).toBeNull();
   });
 

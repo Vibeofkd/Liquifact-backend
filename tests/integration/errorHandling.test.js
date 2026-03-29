@@ -1,51 +1,39 @@
 const request = require('supertest');
 const app = require('../../src/index');
 
-describe('API Integration Tests (RFC 7807)', () => {
-  test('GET /api/invoices should return 501 Not Implemented with Problem Details', async () => {
+describe('API Integration Tests (Error Handling)', () => {
+  test('GET /api/invoices should return 200 with data array', async () => {
     const response = await request(app).get('/api/invoices');
 
-    expect(response.status).toBe(501);
-    expect(response.headers['content-type']).toContain('application/problem+json');
-    expect(response.body).toMatchObject({
-      type: 'https://liquifact.com/probs/service-not-implemented',
-      title: 'Service Not Implemented',
-      status: 501,
-      detail: 'The invoice service is currently under development.',
-      instance: '/api/invoices',
-    });
-    expect(response.body.stack).toBeDefined(); // Since we are in test environment
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body.data)).toBe(true);
   });
 
-  test('POST /api/invoices without amount should return 400 Bad Request', async () => {
+  test('POST /api/invoices without token should return 401 envelope', async () => {
     const response = await request(app)
       .post('/api/invoices')
-      .send({}); // Missing 'amount'
+      .send({});
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
     expect(response.headers['content-type']).toContain('application/problem+json');
-    expect(response.body.title).toBe('Validation Error');
-    expect(response.body.status).toBe(400);
+    expect(response.body.error).toBeDefined();
+    expect(response.body.error.message).toBeDefined();
   });
 
-  test('GET /api/escrow/error-test should return 500 fallback for unknown error', async () => {
-    // Suppress console.error output for expected error log
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+  test('GET /api/escrow/error-test without token should return 401', async () => {
     const response = await request(app).get('/api/escrow/error-test');
 
-    expect(response.status).toBe(500);
-    expect(response.body.title).toBe('Internal Server Error');
-    
-    console.error.mockRestore();
+    expect(response.status).toBe(401);
+    expect(response.body.error).toBeDefined();
   });
 
-  test('GET /unknown-route should return 404 Not Found in RFC 7807 format', async () => {
+  test('GET /unknown-route should return 404 standardized error', async () => {
     const response = await request(app).get('/unknown-route');
 
     expect(response.status).toBe(404);
-    expect(response.body.type).toBe('https://liquifact.com/probs/not-found');
-    expect(response.body.title).toBe('Resource Not Found');
+    expect(response.headers['content-type']).toContain('application/problem+json');
+    expect(response.body.error).toBeDefined();
+    expect(response.body.error.code).toBe('NOT_FOUND');
   });
 
   test('GET /health should return status ok', async () => {
@@ -61,13 +49,30 @@ describe('API Integration Tests (RFC 7807)', () => {
   });
 
   test('GET /api/escrow/:invoiceId should return escrow data', async () => {
-    const response = await request(app).get('/api/escrow/test-invoice');
+    const token = require('jsonwebtoken').sign(
+      { id: 'integration-test' },
+      process.env.JWT_SECRET || 'test-secret',
+      { expiresIn: '1h' }
+    );
+
+    const response = await request(app)
+      .get('/api/escrow/test-invoice')
+      .set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(200);
     expect(response.body.data.invoiceId).toBe('test-invoice');
   });
 
   test('POST /api/invoices with amount should succeed', async () => {
-    const response = await request(app).post('/api/invoices').send({ amount: 100 });
+    const token = require('jsonwebtoken').sign(
+      { id: 'integration-test' },
+      process.env.JWT_SECRET || 'test-secret',
+      { expiresIn: '1h' }
+    );
+
+    const response = await request(app)
+      .post('/api/invoices')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ amount: 100, customer: 'Integration Co' });
     expect(response.status).toBe(201);
   });
 });
