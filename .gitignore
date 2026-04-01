@@ -1,3 +1,4 @@
+node_modules
 # Logs
 logs
 *.log
@@ -114,4 +115,5 @@ dist
 .vscode/
 *.swp
 
-node_modules/*
+# Target (from incoming commit)
+.target

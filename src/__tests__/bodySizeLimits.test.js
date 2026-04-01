@@ -67,8 +67,8 @@ function buildApp(middlewares) {
 /**
  * Generates a JSON body string of approximately `targetBytes` bytes.
  *
- * @param {number} targetBytes - Target byte length.
- * @returns {string} JSON string.
+ * @param {number} targetBytes - Approximate size of the resulting JSON string in bytes.
+ * @returns {string} JSON string payload.
  */
 function makeJsonBody(targetBytes) {
   const paddingLen = Math.max(0, targetBytes - 11);
@@ -78,8 +78,8 @@ function makeJsonBody(targetBytes) {
 /**
  * Generates a URL-encoded body string of approximately `targetBytes` bytes.
  *
- * @param {number} targetBytes - Target byte length.
- * @returns {string} URL-encoded string.
+ * @param {number} targetBytes - Approximate size of the resulting urlencoded string in bytes.
+ * @returns {string} URL-encoded payload.
  */
 function makeUrlencodedBody(targetBytes) {
   return `data=${'x'.repeat(Math.max(0, targetBytes - 5))}`;
@@ -372,8 +372,12 @@ describe('createCorsOptions()', () => {
   afterEach(() => {
     process.env.CORS_ALLOWED_ORIGINS = savedEnv.CORS_ALLOWED_ORIGINS;
     process.env.NODE_ENV             = savedEnv.NODE_ENV;
-    if (savedEnv.CORS_ALLOWED_ORIGINS === undefined) { delete process.env.CORS_ALLOWED_ORIGINS; }
-    if (savedEnv.NODE_ENV             === undefined) { delete process.env.NODE_ENV; }
+    if (savedEnv.CORS_ALLOWED_ORIGINS === undefined) {
+      delete process.env.CORS_ALLOWED_ORIGINS;
+    }
+    if (savedEnv.NODE_ENV === undefined) {
+      delete process.env.NODE_ENV;
+    }
   });
 
   it('allows request with no Origin header', (done) => {
@@ -436,7 +440,6 @@ describe('computeBackoff()', () => {
     expect(computeBackoff(0, 200, 5000)).toBeGreaterThanOrEqual(0);
   });
   it('increases with attempt number', () => {
-    const _d0 = computeBackoff(0, 200, 5000);
     const d3 = computeBackoff(3, 200, 5000);
     // With jitter d3 is almost certainly larger; we check average tendency
     expect(200 * 2 ** 3).toBeGreaterThan(200); // sanity
